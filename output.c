@@ -8,7 +8,10 @@ output file
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "cells.h"
 #include "output.h"
+
+#define GRID_SIZE 15
 
 void printMenu (void) {
     printf("Select option:\n") ;
@@ -18,11 +21,11 @@ void printMenu (void) {
     printf("Enter option: ") ;
 }
 
-/*
-git branch
-git checkout branchname
-git add
-git commit -m "mesage"
-git push/pull
-git merge
-*/
+void printGrid (Cell** grid) {
+    for (size_t i = 0; i < GRID_SIZE; i++) {
+        for (size_t j = 0; j < GRID_SIZE; j++) {
+            printf("%c ", grid[i][j].symbol) ;
+        }
+        printf("\n") ;
+    }
+}
