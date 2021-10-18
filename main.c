@@ -72,6 +72,16 @@ void gameOfLife (void) {
 
 Cell** initGrid () {
     Cell** grid = malloc(sizeof(Cell*) * GRID_SIZE);
+    /*
+    [
+        []
+        []
+        []
+        []
+        … x15
+    ]
+    */
+
 
     if (grid == NULL) {
         return NULL ;
@@ -79,6 +89,22 @@ Cell** initGrid () {
 
     for (size_t i = 0; i < GRID_SIZE; ++i) {
         grid[i] = malloc(sizeof(Cell) * GRID_SIZE) ; //grid[i] / Cell*
+
+        /*
+        [
+            [
+                Cell x15
+            ]
+            [
+                Cell x15
+            ]
+            [
+                Cell x15
+            ]
+            …
+        ]
+        */
+
 
         if (grid[i] == NULL) {
             for (short int j = i-1; j >= 0; --j) {
@@ -95,6 +121,18 @@ Cell** initGrid () {
     for (size_t i = 0 ; i < GRID_SIZE ; ++i) {
         for (size_t j = 0 ; j < GRID_SIZE ; ++j) {
             grid[i][j] = initCell(rand() % 2) ;
+            /*
+            [
+                [
+                    Cell {
+                        status (random 0 ou 1)
+                        symbol => X si status = 1, sinon O
+                    } x15
+                ]
+
+                …
+            ]
+            */
         }
     }
     return grid ;
