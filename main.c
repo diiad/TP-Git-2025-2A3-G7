@@ -56,6 +56,7 @@ void gameOfLife (void) {
                 return ;
             case 1:
                 printGrid(grid) ;
+                nextRound(grid) ;
                 printf("\n\n") ;
                 printf("Next round\n") ;
                 break ;
@@ -202,4 +203,130 @@ void freeGrid (Cell** grid) {
         free(grid) ;
         grid = NULL ;
     }
+}
+
+void nextRound (Cell** grid) {
+    Cell** snapshot = copyGrid(grid) ;
+    if (snapshot == NULL) {
+        return ;
+    }
+
+    size_t neighboursAlive = 0 ;
+    for (size_t i = 0; i < GRID_SIZE; ++i) {
+        for (size_t j = 0; j < GRID_SIZE; ++j) {
+            /*
+            cas1 : cellule morte => vérifier si 3 voisines vivantes => vivante
+            cas2 : cellule vivante => vérifier si 2 ou 3 voisines vivantes => vivivante
+                    sinon morte
+            compter nombre voisines vivantes => grid[i][j] = vivante/morte
+
+
+            i = 0 & j = 0
+            "X" O X X O O
+            O X X X O O
+            O O O O X O
+
+            grid[0][0] = morte
+
+            i = 0 & j = 1
+            O O X X O O
+            O X X X O O
+            O O O O X O
+
+             */
+             neighboursAlive = countNeighboursAlive(snapshot, (short)i, (short)j) ;
+             grid[i][j] = updateCell(snapshot[i][j].status, neighboursAlive) ;
+        }
+    }
+
+    freeGrid(snapshot) ;
+}
+
+size_t countNeighboursAlive (Cell** grid, short lin, short col) {
+    size_t count = 0 ;
+    for (short i = lin-1; i <= lin+1; i++) {
+        for (short j = col-1; j <= col+1; j++) {
+            /*
+            [
+                [(-1,-1) (-1,0) (-1,1)]
+                [(0,-1) X(0,0) (0,1)]
+                [(1,-1) (1,0)  (1,1)]
+            ]
+            */
+            if (i >= 0 && j >= 0 && i < GRID_SIZE && j < GRID_SIZE) {
+                if (grid[i][j].status == 1) count += 1 ; //count++ or ++count
+            }
+        }
+    }
+    if (grid[lin][col].status == 1) count -= 1 ;
+    return count ;
+}
+
+Cell updateCell (size_t previousState, size_t neighboursAlive) {
+    Cell c ;
+
+    //cas 1 : morte => vivante
+    if (previousState == 0 && neighboursAlive == 3) {
+        c = initCell(1) ;
+    } else if (previousState == 1 && (neighboursAlive == 2 || neighboursAlive == 3)) {
+        c = initCell(1) ;
+    } else {
+        c = initCell(0) ;
+    }
+
+    return c ;
+}
+
+Cell** copyGrid (Cell** toCopy) {
+    Cell** copy = malloc(sizeof(Cell*) * GRID_SIZE);
+
+    if (copy == NULL) {
+        return NULL ;
+    }
+
+    for (size_t i = 0; i < GRID_SIZE; ++i) {
+        copy[i] = malloc(sizeof(Cell) * GRID_SIZE) ;
+
+        if (copy[i] == NULL) {
+            for (short int j = i-1; j >= 0; --j) {
+                free(copy[j]) ;
+                copy[j] = NULL ;
+            }
+            free(copy) ;
+            copy = NULL ;
+            return NULL ;
+        }
+    }
+
+    /*
+    ++ <=> +=
+    a++ => toute fin des opérations
+        b = a + a++
+            <=>
+            b = a + a
+            a += 1
+
+            a = 1
+            b = a + a++
+            => b = 2 / a = 2
+    ++a => au tout début des opérations
+        b = a + ++a
+            <=>
+            a += 1
+            b = a + a
+
+            a = 1
+            b = a + ++a
+            => a = 2 / b = 4
+
+    */
+
+    //copie des données de toCopy
+    for (size_t i = 0; i < GRID_SIZE; ++i) {
+        for (size_t j = 0; j < GRID_SIZE; ++j) {
+            copy[i][j] = toCopy[i][j] ;
+        }
+    }
+
+    return copy ;
 }

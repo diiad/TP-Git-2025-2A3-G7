@@ -9,6 +9,12 @@ Cell initCell (size_t s) ;
 Cell** initGrid ();
 void freeGrid (Cell** grid) ;
 
+void nextRound (Cell** grid);
+size_t countNeighboursAlive (Cell** grid, short i, short j);
+Cell updateCell (size_t previousState, size_t neighboursAlive) ;
+
+Cell** copyGrid (Cell** toCopy);
+
 // if (status == 1) printf("X") ;
 // else printf("O") ;
 //
