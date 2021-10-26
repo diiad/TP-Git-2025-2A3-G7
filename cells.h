@@ -5,7 +5,6 @@ typedef struct Cell {
 } Cell;
 
 Cell initCell (size_t s) ;
-void freeCell (Cell* cell) ;
 
 Cell** initGrid ();
 void freeGrid (Cell** grid) ;

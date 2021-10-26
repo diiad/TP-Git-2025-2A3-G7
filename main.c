@@ -38,15 +38,12 @@ Cell initCell (size_t s) {
     return cell ;
 }
 
-void freeCell (Cell* cell) {
-    if (cell != NULL) {
-        free(cell) ;
-        cell = NULL ;
-    }
-}
 
 void gameOfLife (void) {
     Cell** grid = initGrid();
+
+    //vérif grid == NULL
+
     int option = 1 ;
     while (option) {
         printMenu() ;
@@ -70,7 +67,51 @@ void gameOfLife (void) {
     freeGrid(grid) ;
 }
 
+/*
+
+X X X O O O X O X X O X X X O
+O X X X O X X O X X X X X X O
+X O X O X O X O X O O O O O X
+X O X O X X X O O O X O O O X
+O X O O O O O O O O X O X X O
+O O O X X X X O O X X O X O O
+X O O X O O O O X X X X X O O
+O X O O X O O O O X O X O X X
+O X X O X O O X O O X O O X O
+X X X X O O X O O O O O X X X
+X O O O O O X X O O O O X O X
+O O X O O O O O X X X X O O X
+X O X O O O X O X X X X X O O
+O X O X O X O X O O X X O X O
+X O X O O O O X O X O X O X X
+
+    Cell**
+    [
+        15x Cell*
+        [
+            15x Cell
+        ]
+    ]
+*/
+
+
 Cell** initGrid () {
+    /*
+    char => 1 octet
+    short (int) => 2 octets
+    int => 4 octets
+    long (int) => 4/8 octets
+    long long (int) => 16 octets
+    float => 4 octets
+    long float <=> double => 8 octets
+    long double => 16 octets
+
+    n = 8
+    int* pointeur = malloc(sizeof(int) * n) ; sizeof(int) = 4 et n = 8 => 32
+    int* pointeur = malloc(12) ;
+    */
+
+
     Cell** grid = malloc(sizeof(Cell*) * GRID_SIZE);
     /*
     [
@@ -105,6 +146,15 @@ Cell** initGrid () {
         ]
         */
 
+        /*
+        4 premières lignes de Cell** grid
+        grid[0]=> 0x109D01D
+        grid[1]=>
+        …
+        grid[3] =>
+        grid[4] => NULL
+        */
+
 
         if (grid[i] == NULL) {
             for (short int j = i-1; j >= 0; --j) {
@@ -118,6 +168,10 @@ Cell** initGrid () {
     }
     srand(time(NULL));
     //cells alloc
+
+    /*
+    grid[i][j] = [Cell]
+    */
     for (size_t i = 0 ; i < GRID_SIZE ; ++i) {
         for (size_t j = 0 ; j < GRID_SIZE ; ++j) {
             grid[i][j] = initCell(rand() % 2) ;
@@ -129,7 +183,6 @@ Cell** initGrid () {
                         symbol => X si status = 1, sinon O
                     } x15
                 ]
-
                 …
             ]
             */
@@ -145,6 +198,8 @@ void freeGrid (Cell** grid) {
             grid[i] = NULL ;
         }
     }
-    free(grid) ;
-    grid = NULL ;
+    if (grid != NULL) {
+        free(grid) ;
+        grid = NULL ;
+    }
 }
