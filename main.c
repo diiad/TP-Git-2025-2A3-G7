@@ -96,23 +96,7 @@ X O X O O O O X O X O X O X X
 */
 
 
-Cell** initGrid () {
-    /*
-    char => 1 octet
-    short (int) => 2 octets
-    int => 4 octets
-    long (int) => 4/8 octets
-    long long (int) => 16 octets
-    float => 4 octets
-    long float <=> double => 8 octets
-    long double => 16 octets
-
-    n = 8
-    int* pointeur = malloc(sizeof(int) * n) ; sizeof(int) = 4 et n = 8 => 32
-    int* pointeur = malloc(12) ;
-    */
-
-
+Cell** initEmptyGrid () {
     Cell** grid = malloc(sizeof(Cell*) * GRID_SIZE);
     /*
     [
@@ -167,6 +151,26 @@ Cell** initGrid () {
             return NULL ;
         }
     }
+    return grid ;
+}
+
+Cell** initGrid () {
+    /*
+    char => 1 octet
+    short (int) => 2 octets
+    int => 4 octets
+    long (int) => 4/8 octets
+    long long (int) => 16 octets
+    float => 4 octets
+    long float <=> double => 8 octets
+    long double => 16 octets
+
+    n = 8
+    int* pointeur = malloc(sizeof(int) * n) ; sizeof(int) = 4 et n = 8 => 32
+    int* pointeur = malloc(12) ;
+    */
+    Cell** grid = initEmptyGrid() ;
+
     srand(time(NULL));
     //cells alloc
 
@@ -278,48 +282,7 @@ Cell updateCell (size_t previousState, size_t neighboursAlive) {
 }
 
 Cell** copyGrid (Cell** toCopy) {
-    Cell** copy = malloc(sizeof(Cell*) * GRID_SIZE);
-
-    if (copy == NULL) {
-        return NULL ;
-    }
-
-    for (size_t i = 0; i < GRID_SIZE; ++i) {
-        copy[i] = malloc(sizeof(Cell) * GRID_SIZE) ;
-
-        if (copy[i] == NULL) {
-            for (short int j = i-1; j >= 0; --j) {
-                free(copy[j]) ;
-                copy[j] = NULL ;
-            }
-            free(copy) ;
-            copy = NULL ;
-            return NULL ;
-        }
-    }
-
-    /*
-    ++ <=> +=
-    a++ => toute fin des opérations
-        b = a + a++
-            <=>
-            b = a + a
-            a += 1
-
-            a = 1
-            b = a + a++
-            => b = 2 / a = 2
-    ++a => au tout début des opérations
-        b = a + ++a
-            <=>
-            a += 1
-            b = a + a
-
-            a = 1
-            b = a + ++a
-            => a = 2 / b = 4
-
-    */
+    Cell** copy = initEmptyGrid() ;
 
     //copie des données de toCopy
     for (size_t i = 0; i < GRID_SIZE; ++i) {
@@ -330,3 +293,30 @@ Cell** copyGrid (Cell** toCopy) {
 
     return copy ;
 }
+
+
+
+
+/*
+Explication sur ++a / a++
+++ <=> +=
+a++ => toute fin des opérations
+    b = a + a++
+        <=>
+        b = a + a
+        a += 1
+
+        a = 1
+        b = a + a++
+        => b = 2 / a = 2
+++a => au tout début des opérations
+    b = a + ++a
+        <=>
+        a += 1
+        b = a + a
+
+        a = 1
+        b = a + ++a
+        => a = 2 / b = 4
+
+*/

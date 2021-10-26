@@ -29,3 +29,8 @@ void printGrid (Cell** grid) {
         printf("\n") ;
     }
 }
+
+void saveState(Cell** grid){
+    grid = NULL ;
+    return;
+}
