@@ -1,3 +1,8 @@
+Repository : https://github.com/diiad/TP-Git-2025-2A3-G7.git
+Élève 1 = Diadieu DOUCOURE
+Élève 2 = Oumar BARRY
+Élève 3
+ 
 # TP Final - Versioning avec Git et GitHub
 
 *Édition 2025*
