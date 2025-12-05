@@ -1,0 +1,27 @@
+# Structure du projet Git :
+# Le projet contient plusieurs branches créées par les élèves (Oumar, Elève3, Elève1).
+# Des merges en fast-forward ont été réalisés, ce qui garde un historique linéaire.
+# Un commit de revert a été ajouté pour annuler la création du fichier tp.md.
+# L’historique montre donc un mélange de commits normaux et d’un commit de revert.
+
+# Exemple de représentation de l’historique :
+# git log --graph --oneline --all
+# Montre les différentes branches et les commits alignés dans un graphe visuel.
+
+# Différence entre git fetch et git pull :
+# git fetch télécharge les mises à jour depuis le dépôt distant sans modifier les fichiers locaux.
+# git pull fait fetch + merge automatiquement et met directement à jour la branche locale.
+
+# Exemple concret :
+# git fetch est préférable si l’on veut vérifier les nouveaux commits avant de les fusionner.
+# git pull est pratique quand on veut juste mettre sa branche locale à jour rapidement.
+
+# Différence entre git reset et git revert :
+# git revert crée un nouveau commit qui annule un commit précédent sans changer l’historique.
+# git reset modifie l’historique en déplaçant le pointeur HEAD, ce qui peut supprimer des commits.
+
+# Situation risquée :
+# Utiliser git reset --hard sur une branche partagée est dangereux car cela efface des commits
+# que d'autres collaborateurs pourraient encore utiliser.
+# Dans ce cas, git revert est la solution sûre.
+
